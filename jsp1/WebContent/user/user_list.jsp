@@ -29,7 +29,7 @@ try {
 	System.out.println("연결 성공");
 	
 	st = con.createStatement();	// make query page
-	ResultSet rs = st.executeQuery("select * from user where id = 'red'");	// rs : database가 넘겨주는 query에 대한 정보를 가짐. (meta data (key), real data)
+	ResultSet rs = st.executeQuery("select * from user");	// rs : database가 넘겨주는 query에 대한 정보를 가짐. (meta data (key), real data)
 	
 	out.println("<table border='1'>");
 	
