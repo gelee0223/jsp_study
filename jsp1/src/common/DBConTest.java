@@ -9,17 +9,12 @@ import java.sql.Statement;
 public class DBConTest {
 	
 	public static void main(String[] args) {
-		String url   = "jdbc:mysql://localhost:3306/jsp_study";
-		String id    = "root";
-		String pwd = "159753";
 		
 		Connection con;		
 		Statement st;
 		
 		try {
-			
-			Class.forName("org.mariadb.jdbc.Driver");	// reflection (link .jar file)
-			con = DriverManager.getConnection(url, id, pwd);
+			con = DBConnector.getConnector();
 			
 			System.out.println("연결 성공");
 			
