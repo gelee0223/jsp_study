@@ -18,9 +18,9 @@
 String id = request.getParameter("id1");
 String pwd = request.getParameter("pwd1");
 
-String dburl   = "jdbc:mysql://localhost:3306/jsp_study";
-String dbid    = "root";
-String dbpwd = "159753";
+String dbUrl   = "jdbc:mysql://localhost:3306/jsp_study";
+String dbId    = "root";
+String dbPwd = "159753";
 
 Connection con = null;		
 PreparedStatement ps;
@@ -32,7 +32,7 @@ String result = id + "없는 아이디입니다.";
 try {
 	
 	Class.forName("org.mariadb.jdbc.Driver");
-	con = DriverManager.getConnection(dburl, dbid, dbpwd);
+	con = DriverManager.getConnection(dbUrl, dbId, dbPwd);
 	
 	System.out.println("연결 성공");
 	
