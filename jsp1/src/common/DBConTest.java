@@ -26,7 +26,7 @@ public class DBConTest {
 			st = con.createStatement();	// make query page
 			ResultSet rs = st.executeQuery("select * from user");	// rs : database가 넘겨주는 query에 대한 정보를 가짐. (meta data (key), real data)
 			
-			while(rs.next()) {	 // rs.next() !!! point .next 호출 전에는 rs는 meta dat와 real data 중간에 위치하고 있다고 생각하면 됨. next를 호출하지 못하면 data를 읽어올 수 없음
+			while(rs.next()) {	 // rs.next() !!! point .next 호출 전에는 rs는 meta data와 real data 중간에 위치하고 있다고 생각하면 됨. next를 호출하지 못하면 data를 읽어올 수 없음
 				System.out.print(rs.getString("user_no") + " ");
 				System.out.print(rs.getString("id") + " ");
 				System.out.print(rs.getString("password") + " ");
