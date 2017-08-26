@@ -67,10 +67,13 @@ public class UserServlet extends HttpServlet{
 				
 				if(resultMap.get("id") != null) {
 					HttpSession session = request.getSession();
+					session.setAttribute("user", resultMap);
+					/*
 					session.setAttribute("id", resultMap.get("id"));
 					session.setAttribute("user_no", resultMap.get("user_no"));
 					session.setAttribute("name", resultMap.get("name"));
 					session.setAttribute("hobby", resultMap.get("hobby"));
+					*/
 				}
 				
 				doProcess(response, resultMap.get("result"));

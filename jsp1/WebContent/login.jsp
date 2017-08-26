@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,14 +8,22 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%=request.getParameter("id") %>
-<%
+<%=request.getParameter("id")%>
+<% out.println("<br>"); %>
+<%--
 String login = null;									// String login = "false";
 
 if(session.getAttribute("id") != null){ 			// session.getAttribute("login").equals("false")
 	login = (String)session.getAttribute("id");	// login = (String)session.getAttribute("login");
 }
 if(login == null){									// if(login.equals("false")){
+--%>
+<%
+Map<String, String> user = null;
+if(session.getAttribute("user") != null){ 			
+	user = (Map<String, String>)session.getAttribute("user");	
+}
+if(user == null){	
 %>
 
 <form action="login.user" method="post">	
@@ -36,7 +45,28 @@ if(login == null){									// if(login.equals("false")){
 }
 else{
 	// out.println(session.getAttribute("id") + "님 환영합니다.");
-	out.println(login + "님 환영합니다.");
+	
+	String id = user.get("id");
+	String userNo = user.get("user_no");
+	String name = user.get("name");
+	String hobby = user.get("hobby");
+	
+	String result = userNo + "번째로 가입하신 " + name + "님 반갑습니다.<br>";
+	result += name + "님의 id는 " + id + "이며 취미는 아래와 같습니다.<br>";
+	result += "취미 : " + hobby;
+	out.println(result);
+	
+	/*
+	String id = (String)session.getAttribute("id");
+	String userNo = (String)session.getAttribute("user_no");
+	String name = (String)session.getAttribute("name");
+	String hobby = (String)session.getAttribute("hobby");
+	
+	String result = userNo + "번째로 가입하신" + name + "님 반갑습니다.<br>";
+	result += name + "님의 id는 " + id + "이며 취미는 아래와 같습니다.<br>";
+	result += "취미 : " + hobby;
+	out.println(result);
+	*/
 }
 %>
 </body>
