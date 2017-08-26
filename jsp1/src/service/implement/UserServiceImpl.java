@@ -85,4 +85,30 @@ public class UserServiceImpl implements UserService {
 		
 		return resultMap;
 	}
+
+	@Override
+	public int deleteUser(Map<String, String> hm) {
+
+		Connection con;
+		String result = "";
+	
+		try{
+			con = DBConnector.getConnector();
+			
+			String sql = "DELETE FROM user";
+			sql += " WHERE user_no=?";
+			
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, hm.get("user_no"));	// DataBase의 동작으로 user_no가 숫자로 들어오면 숫자로 처리 String임에도 불구하고
+			
+			int row = ps.executeUpdate();
+			
+			return row;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
 }

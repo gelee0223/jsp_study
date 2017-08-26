@@ -7,6 +7,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("input[type='button']").click(function(){
+		var value = this.value;
+		
+		if(value == "회원탈퇴"){
+			$("#command").val("delete");
+		}
+		this.form.submit();
+		/*
+		if(value == "로그아웃"){
+			this.form.submit();
+		}
+		*/
+	})
+})
+</script>
+
 <body>
 <%=request.getParameter("id")%>
 <% out.println("<br>"); %>
@@ -67,6 +87,16 @@ else{
 	result += "취미 : " + hobby;
 	out.println(result);
 	*/
+
+%>
+<form action="some.user" method="post">
+<input type="button" value="로그아웃">
+<input type="button" value="회원탈퇴">
+<input type="button" value="회원정보수정">
+<input type="hidden" name="command"  id="command" value="logout"> 
+<input type="hidden" name="userNo" value="<%=userNo%>">
+</form>
+<%
 }
 %>
 </body>

@@ -78,6 +78,27 @@ public class UserServlet extends HttpServlet{
 				
 				doProcess(response, resultMap.get("result"));
 			}
+			else if(command.equals("logout")) {
+				HttpSession session = request.getSession();
+				session.invalidate();	// session이 가지고 있는 값을 초기화시킴
+				response.sendRedirect("/login.jsp");
+			}
+			else if(command.equals("delete")) {
+				String userNo = request.getParameter("userNo");
+				Map<String, String> hm = new HashMap<String, String>();
+				hm.put("user_no", userNo);
+				
+				int rCnt = us.deleteUser(hm);
+				String result = "회원탈퇴에 실패하셨습니다.";
+				if(rCnt == 1) {
+					result = "회원탈퇴에 성공하셨습니다.";
+					result += "<script>";
+					result += "alert('회원탈퇴에 성공하셨습니다. 방문해 주셔서 감사합니다.');";
+					result += "</script>";
+				}
+				
+				doProcess(response, result);
+			}
 		}
 		
 	}
