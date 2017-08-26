@@ -36,8 +36,8 @@ public class UserServlet extends HttpServlet{
 		hobby = hobby.substring(0, hobby.length() - 1);
 		
 		String result = "입력하신 ID : " + id + "<br>";
-//		result += "입력하신 Password : " + pwd + "<br>";
-//		result += "입력하신 이름 : " + name + "<br>";
+		result += "입력하신 Password : " + pwd + "<br>";
+		result += "입력하신 이름 : " + name + "<br>";
 		result += "입력하신 취미 : " + hobby + "<br>";
 		
 		Connection con;
