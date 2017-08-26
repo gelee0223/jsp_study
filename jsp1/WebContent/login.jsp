@@ -9,21 +9,34 @@
 <body>
 <%=request.getParameter("id") %>
 <%
-String login = "false";
-if(session.getAttribute("login") != null){
-	login = (String)session.getAttribute("login");	
+String login = null;									// String login = "false";
+
+if(session.getAttribute("id") != null){ 			// session.getAttribute("login").equals("false")
+	login = (String)session.getAttribute("id");	// login = (String)session.getAttribute("login");
 }
-if(login.equals("false")){
+if(login == null){									// if(login.equals("false")){
 %>
-<form action="login_ok.jsp">	
+
+<form action="login.user" method="post">	
+아이디 : <input type="text" name="id1" id="id"><br>
+비밀번호 : <input type="password" name="pwd1" id="pwd"><br>
+<input type="submit" value="로그인">	
+<input type="hidden" name="command" value="login">	<!-- Controller를 Command 방식으로 분기 -->
+</form>
+
+<!--  
+<form action="login.user" method="post">	
 아이디 : <input type="text" name="id1" id="id"><br>
 비밀번호 : <input type="password" name="pwd1" id="pwd"><br>
 <input type="submit" value="로그인">
+<input type="hidden" name="command" value="login">
 </form>
+-->
 <%
 }
-else if(login.equals("true")){
-	out.println(session.getAttribute("id") + "님 환영합니다.");
+else{
+	// out.println(session.getAttribute("id") + "님 환영합니다.");
+	out.println(login + "님 환영합니다.");
 }
 %>
 </body>

@@ -13,8 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<% 
-
+<%
 String id = request.getParameter("id1");
 String pwd = request.getParameter("pwd1");
 
@@ -72,13 +71,11 @@ finally{
 		con.close();
 	}
 }
-
-
 %>
-
 <script>
 	alert("<%=result%>");
 	location.href="/login.jsp";
 </script>
+
 </body>
 </html>
