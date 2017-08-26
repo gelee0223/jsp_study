@@ -44,6 +44,7 @@
 비밀번호 : <input type="password" name="pwd1" id="pwd"><br>
 <input type="submit" value="로그인">
  -->
+<input type="hidden" name="command" value="siginin">
 </form>
 
 </body>
