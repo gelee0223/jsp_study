@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.DBConnector;
@@ -54,8 +56,8 @@ public class UserServiceImpl implements UserService {
 		try {
 			con = DBConnector.getConnector();
 			System.out.println("연결 성공");
-			String sql = "select * from user";
-			sql += " where id=?";
+			String sql = "SELECT * FROM user";
+			sql += " WHERE id=?";
 			ps = con.prepareStatement(sql);
 			ps.setString(1 , hm.get("id"));
 			ResultSet rs = ps.executeQuery();
@@ -90,7 +92,7 @@ public class UserServiceImpl implements UserService {
 	public int deleteUser(Map<String, String> hm) {
 
 		Connection con;
-		String result = "";
+//		String result = "";
 	
 		try{
 			con = DBConnector.getConnector();
@@ -110,5 +112,68 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return 0;
+	}
+
+	@Override
+	public int updateUser(Map<String, String> hm) {
+		Connection con;
+	
+		try{
+			con = DBConnector.getConnector();
+			
+			String sql = "UPDATE user";
+			sql += " SET name=?,";
+			sql += " password=?,";
+			sql += " hobby=?";
+			sql += " WHERE user_no=?";
+			
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, hm.get("name"));	// DataBase의 동작으로 user_no가 숫자로 들어오면 숫자로 처리 String임에도 불구하고
+			ps.setString(2, hm.get("pwd"));
+			ps.setString(3, hm.get("hobby"));
+			ps.setString(4, hm.get("user_no"));
+			
+			int row = ps.executeUpdate();
+			
+			return row;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public List<Map<String, String>> selectUserList(Map<String, String> hm) {
+		Connection con;
+		PreparedStatement ps;
+			
+		List<Map<String, String>> userList = new ArrayList<Map<String, String>>();
+		
+		try {
+			con = DBConnector.getConnector();
+			System.out.println("연결 성공");
+			String sql = "SELECT * FROM user";
+		
+			ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Map<String, String> resultMap = new HashMap<String, String>();	
+				resultMap.put("id", rs.getString("id"));
+				resultMap.put("name", rs.getString("name"));
+				resultMap.put("hobby", rs.getString("hobby"));
+				resultMap.put("user_no", rs.getString("user_no"));
+
+				userList.add(resultMap);
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+				
+		return userList;
 	}
 }

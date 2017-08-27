@@ -17,6 +17,14 @@ $(document).ready(function(){
 		if(value == "회원탈퇴"){
 			$("#command").val("delete");
 		}
+		else if(value == "회원정보수정"){
+			location.href = "/user/update.jsp";
+			return;
+		}
+		else if(value == "회원리스트"){
+			location.href = "/user/list.jsp";
+			return;
+		}
 		this.form.submit();
 		/*
 		if(value == "로그아웃"){
@@ -28,8 +36,8 @@ $(document).ready(function(){
 </script>
 
 <body>
-<%=request.getParameter("id")%>
-<% out.println("<br>"); %>
+<%--=request.getParameter("id")--%>
+<%-- out.println("<br>"); --%>
 <%--
 String login = null;									// String login = "false";
 
@@ -93,6 +101,7 @@ else{
 <input type="button" value="로그아웃">
 <input type="button" value="회원탈퇴">
 <input type="button" value="회원정보수정">
+<input type="button" value="회원리스트">
 <input type="hidden" name="command"  id="command" value="logout"> 
 <input type="hidden" name="userNo" value="<%=userNo%>">
 </form>

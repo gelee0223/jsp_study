@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -65,9 +66,12 @@ public class UserServlet extends HttpServlet{
 				
 				Map<String, String> resultMap = us.selectUser(hm);
 				
+				String url = "location.href = '/user/login.jsp'";
+				
 				if(resultMap.get("id") != null) {
 					HttpSession session = request.getSession();
 					session.setAttribute("user", resultMap);
+					url = "location.href = '/main.jsp'";
 					/*
 					session.setAttribute("id", resultMap.get("id"));
 					session.setAttribute("user_no", resultMap.get("user_no"));
@@ -75,13 +79,17 @@ public class UserServlet extends HttpServlet{
 					session.setAttribute("hobby", resultMap.get("hobby"));
 					*/
 				}
+				String result = "<script>";
+				result += "alert('" + resultMap.get("result") + "');";
+				result += url;
+				result += "</script>";
 				
-				doProcess(response, resultMap.get("result"));
+				doProcess(response, result);
 			}
 			else if(command.equals("logout")) {
 				HttpSession session = request.getSession();
 				session.invalidate();	// session이 가지고 있는 값을 초기화시킴
-				response.sendRedirect("/login.jsp");
+				response.sendRedirect("/user/login.jsp");
 			}
 			else if(command.equals("delete")) {
 				String userNo = request.getParameter("userNo");
@@ -97,6 +105,66 @@ public class UserServlet extends HttpServlet{
 					result += "</script>";
 				}
 				
+				doProcess(response, result);
+			}
+			else if(command.equals("update")) {
+
+				// HttpSession session = request.getSession();
+				
+				String id = request.getParameter("id");
+				String pwd = request.getParameter("pwd");
+				String name = request.getParameter("name");
+				String[] hobbies = request.getParameterValues("hobby");
+				String user_no = request.getParameter("userNo");
+				// String user_no = ((Map<String, String>)session.getAttribute("user")).get("user_no");
+				
+				String hobby = "";
+				
+				for(String h : hobbies) {
+					hobby += h + ",";
+				}
+				
+				hobby = hobby.substring(0, hobby.length() - 1);
+				
+				Map<String, String> hm = new HashMap<String, String>();
+				hm.put("id", id);
+				hm.put("pwd", pwd);
+				hm.put("name", name);
+				hm.put("hobby", hobby);
+				hm.put("user_no", user_no);
+		
+				int rCnt = us.updateUser(hm);
+				
+				String result = "회원 정보 수정이 실패하였습니다. 다시 시도해 보세요.";
+				
+				if(rCnt == 1) {
+					result = "회원 정보 수정이 완료되었습니다.";
+					
+					HttpSession session = request.getSession();
+					session.setAttribute("user", hm);
+				}
+				doProcess(response, result);
+			}
+			else if(command.equals("list")) {
+				Map<String, String> hm = new HashMap<String, String>();
+				List<Map<String, String>> userList = us.selectUserList(hm);
+				
+				String result = "<table border='1'>";
+				
+				result += "<td align='center'>" + "No." + "</td>";
+				result += "<td align='center'>" + "이름" + "</td>";
+				result += "<td align='center'>" + "아이디" + "</td>";
+				result += "<td align='center'>" + "취미" + "</td>";
+				 
+				for(Map<String, String>m : userList) {
+					result += "<tr>";
+					result += "<td>" + m.get("user_no") + "</td>";
+					result += "<td>" + m.get("name") + "</td>";
+					result += "<td>" + m.get("id") + "</td>";
+					result += "<td>" + m.get("hobby") + "</td>";
+					result += "</tr>";
+				}
+				result += "</table>";
 				doProcess(response, result);
 			}
 		}
