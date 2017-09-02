@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
 import service.UserService;
 import service.implement.UserServiceImpl;
 
@@ -21,6 +23,7 @@ public class UserServlet extends HttpServlet{
 	
 	private static final long serialVersionUID = 1L;
 	private UserService us = new UserServiceImpl();
+	private Gson g = new Gson();
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			     throws ServletException, IOException {
@@ -57,21 +60,25 @@ public class UserServlet extends HttpServlet{
 				doProcess(response, result);
 			}
 			else if(command.equals("login")) {
-				String id = request.getParameter("id1");
-				String pwd = request.getParameter("pwd1");
+//				String id = request.getParameter("id1");
+//				String pwd = request.getParameter("pwd1");
 				
-				Map<String, String> hm = new HashMap<String, String>();
-				hm.put("id", id);
-				hm.put("pwd", pwd);
+//				Map<String, String> hm = new HashMap<String, String>();
+//				hm.put("id", id);
+//				hm.put("pwd", pwd);
+				
+				Map<String, String> hm = g.fromJson(request.getParameter("param"), HashMap.class);
 				
 				Map<String, String> resultMap = us.selectUser(hm);
 				
-				String url = "location.href = '/user/login.jsp'";
+//				String url = "location.href = '/user/login.jsp'";
+				String url = "/user/login.jsp";
 				
 				if(resultMap.get("id") != null) {
 					HttpSession session = request.getSession();
 					session.setAttribute("user", resultMap);
-					url = "location.href = '/main.jsp'";
+//					url = "location.href = '/main.jsp'";
+					url = "/main.jsp";
 					/*
 					session.setAttribute("id", resultMap.get("id"));
 					session.setAttribute("user_no", resultMap.get("user_no"));
@@ -79,10 +86,14 @@ public class UserServlet extends HttpServlet{
 					session.setAttribute("hobby", resultMap.get("hobby"));
 					*/
 				}
-				String result = "<script>";
-				result += "alert('" + resultMap.get("result") + "');";
-				result += url;
-				result += "</script>";
+//				String result = "<script>";
+//				result += "alert('" + resultMap.get("result") + "');";
+//				result += url;
+//				result += "</script>";
+				
+				resultMap.put("url", url);
+				
+				String result = g.toJson(resultMap);
 				
 				doProcess(response, result);
 			}
@@ -174,6 +185,34 @@ public class UserServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 				 throws ServletException, IOException {
 		
+		response.setContentType("text/html;charset=utf-8");
+		
+		String param = request.getParameter("param");
+		Map<String, String> hm = g.fromJson(param, HashMap.class);
+		
+		System.out.println(hm.get("id"));
+		System.out.println(hm.get("pwd"));
+		
+		String id = hm.get("id");
+		String pwd = hm.get("pwd");
+		
+		String msg = "없는 아이디입니다.";
+		
+		if(id.equals("red")) {
+			if(pwd.equals("red")) {
+				msg = "로그인에 성공하셨습니다.";
+			}
+			else {
+				msg = "비밀번호가 틀렸습니다.";
+			}
+		}
+		
+		Map<String, String> rHm = new HashMap<String, String>();
+		rHm.put("msg", msg);
+		
+		String result = g.toJson(rHm);
+		
+		doProcess(response, result);
     }
 	
 	public void doProcess(HttpServletResponse response, String writeStr)
