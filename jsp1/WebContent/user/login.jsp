@@ -1,11 +1,22 @@
 <%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+ <%@ include file="/common/header.jsp" %>
+<!--  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+ -->
+<title>로그인</title>
+<!-- 
+<style>
+body{
+	background-color : skyblue; 
+}
+</style>
+ -->
 </head>
 
 <script src="/js/jquery-3.2.1.min.js"></script>
@@ -50,14 +61,17 @@ if(session.getAttribute("id") != null){ 			// session.getAttribute("login").equa
 if(login == null){									// if(login.equals("false")){
 --%>
 <%
+/*
 Map<String, String> user = null;
 if(session.getAttribute("user") != null){ 			
 	user = (Map<String, String>)session.getAttribute("user");	
 }
+*/
 if(user == null){	
 %>
 
 <script>
+/*
 var AjaxUtil = function(p_url, p_params, p_method, p_aSync){
 	
 	if(!p_url || p_url.trim() == ""){
@@ -117,9 +131,55 @@ var AjaxUtil = function(p_url, p_params, p_method, p_aSync){
    	   	this.xhr.send();
    	}
 }
-
+*/
 $(document).ready(function(){
 	
+	$("input[type='button']").click(function(){
+		var value = this.value;
+		
+		if(value == "회원가입"){
+			location.href = "/user/signin.jsp";
+			return;
+		}
+		
+		else if(value == "로그인"){
+			var idValue = $("#id").val().trim();
+			var pwdValue = $("#pwd").val().trim();
+			
+			if(idValue == ""){
+				alert("아이디를 적어주세요!")
+				$("#id").val("");
+				$("#id").focus();
+				return;
+			}
+			
+			if(pwdValue == ""){
+				alert("비밀번호를 입력해 주세요!");
+				$("#pwd").val("");
+				$("#pwd").focus();
+				return;
+			}
+			
+			var param = {};
+			param["id"] = idValue;
+			param["pwd"] = pwdValue;
+			
+			
+			// param = JSON.stringify(param);
+			// alert(param);
+			
+			param = "?command=login&param=" + JSON.stringify(param);
+			param = encodeURI(param);
+			
+			var au = new AjaxUtil("test.user", param, "post");
+			au.changeCallBack(callback);
+			au.send();
+			
+			return;
+		}
+	})
+	
+	/*
 	$("#btnLogin").click(function(){
 		var idValue = $("#id").val().trim();
 		var pwdValue = $("#pwd").val().trim();
@@ -142,10 +202,10 @@ $(document).ready(function(){
 		param["id"] = idValue;
 		param["pwd"] = pwdValue;
 		
-		/*
-		param = JSON.stringify(param);
-		alert(param);
-		*/
+		
+		// param = JSON.stringify(param);
+		// alert(param);
+		
 		param = "?command=login&param=" + JSON.stringify(param);
 		param = encodeURI(param);
 		
@@ -154,7 +214,7 @@ $(document).ready(function(){
 		au.send();
 		
 	});
-	
+	*/
 })
 
 function callback(result){
@@ -168,6 +228,7 @@ function callback(result){
 아이디 : <input type="text" name="id1" id="id"><br>
 비밀번호 : <input type="password" name="pwd1" id="pwd"><br>
 <input type="button" id="btnLogin" value="로그인">	
+<input type="button" id="btnInsert" value="회원가입">
 <input type="hidden" name="command" value="login">	<!-- Controller를 Command 방식으로 분기 -->
 </form>
 

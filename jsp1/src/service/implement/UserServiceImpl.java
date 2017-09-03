@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 	public String insertUser(Map<String, String> hm) {
 		
 		String result = hm.get("name") + "님 무슨 이유인지는 모르겠지만, 회원가입에 실패하셨습니다.";		
-		Connection con;
+		Connection con = null;
 		
 		try{
 			con = DBConnector.getConnector();
@@ -35,18 +35,41 @@ public class UserServiceImpl implements UserService {
 			int row = ps.executeUpdate();
 			
 			if(row == 1) {
+				con.commit();
 				result = hm.get("name") + "님, 회원가입에 성공하셨습니다.";
 			}
+			else {
+				con.rollback();
+			}
 		}
-		catch(Exception e) {
+		catch(ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+		catch(SQLException e) {
+			if(con != null) {
+				try {
+					con.rollback();
+				}
+				catch (SQLException el) {
+					// TODO: handle exception
+					el.printStackTrace();
+				}
+			}
+		}
+		finally {
+			try {
+				DBConnector.closeConnector();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return result;
 	}
 
 	@Override
-	public Map<String, String> selectUser(Map<String, String> hm) {
+	public Map<String, String> loginUser(Map<String, String> hm) {
 		Connection con;
 		PreparedStatement ps;
 		String result = hm.get("id") + "는 없는 아이디 입니다.";
@@ -69,6 +92,7 @@ public class UserServiceImpl implements UserService {
 					resultMap.put("name", rs.getString("name"));
 					resultMap.put("hobby", rs.getString("hobby"));
 					resultMap.put("user_no", rs.getString("user_no"));
+					resultMap.put("admin", rs.getString("admin"));
 					
 					result = "로그인 성공하셨네요";
 
@@ -91,7 +115,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int deleteUser(Map<String, String> hm) {
 
-		Connection con;
+		Connection con = null;
 //		String result = "";
 	
 		try{
@@ -105,10 +129,36 @@ public class UserServiceImpl implements UserService {
 			
 			int row = ps.executeUpdate();
 			
+			if(row == 1) {
+				con.commit();
+			}
+			else {
+				con.rollback();
+			}
+
 			return row;
 		}
-		catch(Exception e) {
+		catch(ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+		catch(SQLException e) {
+			if(con != null) {
+				try {
+					con.rollback();
+				}
+				catch (SQLException el) {
+					// TODO: handle exception
+					el.printStackTrace();
+				}
+			}
+		}
+		finally {
+			try {
+				DBConnector.closeConnector();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return 0;
@@ -116,7 +166,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int updateUser(Map<String, String> hm) {
-		Connection con;
+		Connection con = null;
 	
 		try{
 			con = DBConnector.getConnector();
@@ -135,10 +185,36 @@ public class UserServiceImpl implements UserService {
 			
 			int row = ps.executeUpdate();
 			
+			if(row == 1) {
+				con.commit();
+			}
+			else {
+				con.rollback();
+			}
+			
 			return row;
 		}
-		catch(Exception e) {
+		catch(ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+		catch(SQLException e) {
+			if(con != null) {
+				try {
+					con.rollback();
+				}
+				catch (SQLException el) {
+					// TODO: handle exception
+					el.printStackTrace();
+				}
+			}
+		}
+		finally {
+			try {
+				DBConnector.closeConnector();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return 0;
 	}
@@ -175,5 +251,41 @@ public class UserServiceImpl implements UserService {
 		}
 				
 		return userList;
+	}
+
+	@Override
+	public Map<String, String> selectUser(Map<String, String> hm) {
+		Connection con;
+		PreparedStatement ps;
+		String result = hm.get("id") + "는 없는 아이디 입니다.";
+		
+		Map<String, String> resultMap = new HashMap<String, String>();
+		
+		try {
+			con = DBConnector.getConnector();
+			System.out.println("연결 성공");
+			String sql = "SELECT * FROM user";
+			sql += " WHERE user_no=?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1 , hm.get("user_no"));
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+					resultMap.put("id", rs.getString("id"));
+					resultMap.put("name", rs.getString("name"));
+					resultMap.put("hobby", rs.getString("hobby"));
+					resultMap.put("user_no", rs.getString("user_no"));
+					resultMap.put("admin", rs.getString("admin"));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+//		resultMap.put("result", result);
+		
+		return resultMap;
 	}
 }

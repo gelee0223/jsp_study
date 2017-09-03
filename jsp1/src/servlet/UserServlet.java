@@ -36,7 +36,7 @@ public class UserServlet extends HttpServlet{
 		}
 		else {
 			
-			if(command.equals("signing")) {
+			if(command.equals("signin")) {
 				String id = request.getParameter("id");
 				String pwd = request.getParameter("pwd");
 				String name = request.getParameter("name");
@@ -69,7 +69,7 @@ public class UserServlet extends HttpServlet{
 				
 				Map<String, String> hm = g.fromJson(request.getParameter("param"), HashMap.class);
 				
-				Map<String, String> resultMap = us.selectUser(hm);
+				Map<String, String> resultMap = us.loginUser(hm);
 				
 //				String url = "location.href = '/user/login.jsp'";
 				String url = "/user/login.jsp";
@@ -151,8 +151,8 @@ public class UserServlet extends HttpServlet{
 				if(rCnt == 1) {
 					result = "회원 정보 수정이 완료되었습니다.";
 					
-					HttpSession session = request.getSession();
-					session.setAttribute("user", hm);
+//					HttpSession session = request.getSession();
+//					session.setAttribute("user", hm);
 				}
 				doProcess(response, result);
 			}
@@ -176,6 +176,14 @@ public class UserServlet extends HttpServlet{
 					result += "</tr>";
 				}
 				result += "</table>";
+				doProcess(response, result);
+			}
+			else if(command.equals("view")) {
+				String param = request.getParameter("param");
+				Map<String, String> hm = g.fromJson(param,  HashMap.class);
+				
+				Map<String, String> rHm = us.selectUser(hm);
+				String result = g.toJson(rHm);
 				doProcess(response, result);
 			}
 		}
