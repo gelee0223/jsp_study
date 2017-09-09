@@ -5,9 +5,23 @@
 <script>
 
 	function callback(result){
+		
+		/*
 		$("#r_div").html(result);
 		result = JSON.parse(result);
 		alert(result.length);
+		*/
+
+		result = JSON.parse(result);
+		var str = "";
+		
+		for(var i = 0, max = result.length ; i<max ; i++){
+			var b=result[i];
+			str += b.title + ", " + b.content + ", " + b.bNum + "<br>";
+		}
+		
+		$("#r_div").html(str);
+		
 	}
 
 	$(document).ready(function(){

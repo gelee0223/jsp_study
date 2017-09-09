@@ -93,6 +93,16 @@ public class BoardServlet extends HttpServlet{
 				 throws ServletException, IOException {
 		
 		response.setContentType("text/html;charset=utf-8");
+				
+		String command = request.getParameter("command");
+		
+		if(command.equals("list")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/board/board_list.jsp");
+			List<Board> boardList = bs.selectBoardList();
+			
+			request.setAttribute("boardList", boardList);
+			rd.forward(request, response);
+		}
 		
     }
 	
