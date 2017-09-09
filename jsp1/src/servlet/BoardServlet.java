@@ -55,14 +55,11 @@ public class BoardServlet extends HttpServlet{
 		
 		String command = request.getParameter("command");
 		
-		if(command.equals("list")) {
-			RequestDispatcher rd = request.getRequestDispatcher("/board/board_list.jsp");
-			
+		if(command.equals("list")) {			
 			List<Board> boardList = bs.selectBoardList();
-			request.setAttribute("boardList", boardList);
 			
-			rd.forward(request, response);
-			
+			String result = g.toJson(boardList);
+			doProcess(response, result);
 //			request.setAttribute("test", "내가 보드야!");
 			/*
 			List<String> list = new ArrayList<String>();
