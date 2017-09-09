@@ -10,13 +10,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  -->
 <title>로그인</title>
-<!-- 
+
 <style>
 body{
 	background-color : skyblue; 
 }
+
+p {
+    text-align: center;
+    margin-top: 300px;
+} 
+
+
 </style>
- -->
 </head>
 
 <script src="/js/jquery-3.2.1.min.js"></script>
@@ -225,11 +231,13 @@ function callback(result){
 
 </script>
 <form action="login.user" method="post">	
+<p>
 아이디 : <input type="text" name="id1" id="id"><br>
 비밀번호 : <input type="password" name="pwd1" id="pwd"><br>
 <input type="button" id="btnLogin" value="로그인">	
 <input type="button" id="btnInsert" value="회원가입">
 <input type="hidden" name="command" value="login">	<!-- Controller를 Command 방식으로 분기 -->
+</p>
 </form>
 
 <!--  
