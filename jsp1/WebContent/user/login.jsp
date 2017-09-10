@@ -3,29 +3,12 @@
     pageEncoding="UTF-8"%>
     
  <%@ include file="/common/header.jsp" %>
-<!--  
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- -->
+ <script src="/js/jquery-3.2.1.min.js"></script>
+ <link rel="stylesheet" href="/ui/signin.css"/>
+
 <title>로그인</title>
-
-<style>
-body{
-	background-color : skyblue; 
-}
-
-p {
-    text-align: center;
-    margin-top: 300px;
-} 
-
-
-</style>
 </head>
 
-<script src="/js/jquery-3.2.1.min.js"></script>
 <script>
 $(document).ready(function(){
 	$("input[type='button']").click(function(){
@@ -46,146 +29,19 @@ $(document).ready(function(){
 			return;
 		}
 		this.form.submit();
-		/*
-		if(value == "로그아웃"){
-			this.form.submit();
-		}
-		*/
+		
 	})
 })
 </script>
 
 <body>
-<%--=request.getParameter("id")--%>
-<%-- out.println("<br>"); --%>
-<%--
-String login = null;									// String login = "false";
-
-if(session.getAttribute("id") != null){ 			// session.getAttribute("login").equals("false")
-	login = (String)session.getAttribute("id");	// login = (String)session.getAttribute("login");
-}
-if(login == null){									// if(login.equals("false")){
---%>
 <%
-/*
-Map<String, String> user = null;
-if(session.getAttribute("user") != null){ 			
-	user = (Map<String, String>)session.getAttribute("user");	
-}
-*/
 if(user == null){	
 %>
 
 <script>
-/*
-var AjaxUtil = function(p_url, p_params, p_method, p_aSync){
-	
-	if(!p_url || p_url.trim() == ""){
-		alert("AjaxUtil호출시 url은 필수 입니다.");
-		return;
-	}
-	
-	this.params = p_params;
-	
-	var getHttpXmlObj = function(){
-		if(window.XMLHttpRequest){
-	  		return new XMLHttpRequest();
-	 	}
-		else if(window.ActiveXObject){
-	  		return new ActiveXObject("Microsoft.XMLHTTP");
-	 	}
-		alert("해당 브라우져가  Ajax를 지원하지 않습니다.");
-	}
-	
-	this.xhr = getHttpXmlObj();
-	var method = p_method ? p_method : "get";
-	var url = p_url;
-	var aSync = p_aSync ? p_aSync : true; 	// true;	// 비동기 -> false일 때, 동기
-	
-	this.xhr.callback = null;
-	
-	this.xhr.onreadystatechange=function(){
-   		if (this.readyState==4){	// readyState : 0 ~ 4 / 4 : server에서 결과값을 준 상태
-   			if(this.status==200){	// 200 ~ 209 : 성공했다는 의미 (그 외의 값들은 error)
-	   			var result = decodeURIComponent(this.responseText);
-   		
-   				if(this.callback){
-   					this.callback(result);
-   				}
-   				else{
-   					alert(result);
-   				}
-   		
-   			}
-   			else{
-   				var result = decodeURIComponent(this.responseText);
-   				alert(result);
-   			}
-   			
-   		}
-	}
-	
-	this.changeCallBack = function(func){
-		// this.xhr.onreadystatechange = func;
-		this.xhr.callback = func;
-	}
-	
-   	this.xhr.open(method, url+this.params, aSync);	// 연결 준비
-   	
-   	this.send = function(){
-   		this.xhr.send.arguments = this;
-   	   	this.xhr.send();
-   	}
-}
-*/
 $(document).ready(function(){
 	
-	$("input[type='button']").click(function(){
-		var value = this.value;
-		
-		if(value == "회원가입"){
-			location.href = "/user/signin.jsp";
-			return;
-		}
-		
-		else if(value == "로그인"){
-			var idValue = $("#id").val().trim();
-			var pwdValue = $("#pwd").val().trim();
-			
-			if(idValue == ""){
-				alert("아이디를 적어주세요!")
-				$("#id").val("");
-				$("#id").focus();
-				return;
-			}
-			
-			if(pwdValue == ""){
-				alert("비밀번호를 입력해 주세요!");
-				$("#pwd").val("");
-				$("#pwd").focus();
-				return;
-			}
-			
-			var param = {};
-			param["id"] = idValue;
-			param["pwd"] = pwdValue;
-			
-			
-			// param = JSON.stringify(param);
-			// alert(param);
-			
-			param = "?command=login&param=" + JSON.stringify(param);
-			param = encodeURI(param);
-			
-			var au = new AjaxUtil("test.user", param, "post");
-			au.changeCallBack(callback);
-			au.send();
-			
-			return;
-		}
-	})
-	
-	/*
 	$("#btnLogin").click(function(){
 		var idValue = $("#id").val().trim();
 		var pwdValue = $("#pwd").val().trim();
@@ -208,10 +64,6 @@ $(document).ready(function(){
 		param["id"] = idValue;
 		param["pwd"] = pwdValue;
 		
-		
-		// param = JSON.stringify(param);
-		// alert(param);
-		
 		param = "?command=login&param=" + JSON.stringify(param);
 		param = encodeURI(param);
 		
@@ -220,7 +72,7 @@ $(document).ready(function(){
 		au.send();
 		
 	});
-	*/
+	
 })
 
 function callback(result){
@@ -229,17 +81,19 @@ function callback(result){
 	location.href = re.url;
 }
 
+
 </script>
+<!-- 
 <form action="login.user" method="post">	
 <p>
-아이디 : <input type="text" name="id1" id="id"><br>
+아이디 : <input type="text" name="id1" id="id" class="test"><br>
 비밀번호 : <input type="password" name="pwd1" id="pwd"><br>
 <input type="button" id="btnLogin" value="로그인">	
 <input type="button" id="btnInsert" value="회원가입">
-<input type="hidden" name="command" value="login">	<!-- Controller를 Command 방식으로 분기 -->
+<input type="hidden" name="command" value="login">	
 </p>
 </form>
-
+ -->
 <!--  
 <form action="login.user" method="post">	
 아이디 : <input type="text" name="id1" id="id"><br>
@@ -248,6 +102,27 @@ function callback(result){
 <input type="hidden" name="command" value="login">
 </form>
 -->
+
+	<div class="container">
+		<form class="form-signin" action="/user/login_ok.jsp">
+			<h2 class="form-signin-heading">Please login</h2>
+			<label for="inputEmail" class="sr-only">ID</label> <input type="text"
+				id="id" name="id" class="form-control" placeholder="ID" required
+				autofocus> <label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" name="pwd" id="pwd" class="form-control"
+				placeholder="Password" required>
+			<div class="checkbox">
+				<label> <input type="checkbox" value="remember-me">
+					Remember me
+				</label>
+			</div>
+			<button id="btnLogin" class="btn btn-lg btn-primary btn-block"
+				type="button">Login</button>
+		</form>
+
+	</div>
+
+
 <%
 }
 else{

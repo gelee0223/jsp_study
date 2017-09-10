@@ -2,7 +2,9 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -55,36 +57,16 @@ public class BoardServlet extends HttpServlet{
 		
 		String command = request.getParameter("command");
 		
+		if(command == null) {
+			Map<String, String> pMap = g.fromJson(request.getReader(), HashMap.class);
+			command = pMap.get("command");
+		}
+		
 		if(command.equals("list")) {			
 			List<Board> boardList = bs.selectBoardList();
 			
 			String result = g.toJson(boardList);
 			doProcess(response, result);
-//			request.setAttribute("test", "내가 보드야!");
-			/*
-			List<String> list = new ArrayList<String>();
-			list.add("test1");
-			list.add("test2");
-			list.add("test3");
-			
-			request.setAttribute("list", list);
-			
-			List<User> userList = new ArrayList<User>();
-			
-			User u = new User();
-			u.setName("홍길동");
-			u.setAge(30);
-			userList.add(u);
-			
-			User u2 = new User();
-			u2.setName("이가은");
-			u2.setAge(27);
-			userList.add(u2);
-			
-			request.setAttribute("ul", userList);
-			
-			rd.forward(request, response);
-			*/
 		}
 				
 	}
