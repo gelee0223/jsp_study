@@ -7,11 +7,8 @@
 </head>
 <body>
 <!--  ${test} <%--=request.getAttribute("test")--%>  -->
-<!-- 
-${list]
-${ul}
-${red}
- -->
+
+ 
 <table border="1">
 	<tr>
 		<th>번호</th>
