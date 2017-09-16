@@ -7,12 +7,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/js/AjaxUtil.js"></script>
+<script src="/js/JqAjax.js"></script>
 
-<script src="/ui/common.js"></script>
+<script src="/ui/common.js"></script>	<!--  jquery보다 아래에 위치해야 함 -->
 <script src="/ui/btsp3.7.7/js/bootstrap.min.js"></script>
 <script src="/ui/btsp3.7.7/js/bootstrap-table.js"></script>
 <script src="/ui/btsp3.7.7/js/bootstrap-table.js"></script>
-<script src="/js/JqAjax.js"></script>
 <link rel="stylesheet" href="/ui/btsp3.7.7/css/bootstrap-theme.min.css"/>
 <link rel="stylesheet" href="/ui/btsp3.7.7/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="/ui/btsp3.7.7/css/bootstrap-table.css"/>

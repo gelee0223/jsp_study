@@ -1,15 +1,14 @@
 package service.implement;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import common.DBConnector;
 import dao.BoardDAO;
 import dto.Board;
+import dto.Page;
 import service.BoardService;
 
 public class BoardServiceImpl implements BoardService {
@@ -17,16 +16,17 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO bDAO = new BoardDAO();
 	
 	@Override
-	public List<Board> selectBoardList() {
+	public List<Board> selectBoardList(Map<String, String> pHm, Page p) {
 		Connection con;
 //		PreparedStatement ps;
 			
 		List<Board> boardList = null;
 		
-		try {
-			
+		try {			
 			con = DBConnector.getConnector();
-			boardList = bDAO.selectBoardList(con);
+			int totalCnt = bDAO.selectBoardCount(con, pHm, p);
+			p.setTotalCnt(totalCnt);
+			boardList = bDAO.selectBoardList(con, pHm, p);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

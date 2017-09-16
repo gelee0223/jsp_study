@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import dto.Board;
+import dto.Page;
 
 public interface BoardService {
 	
 	// 게시판 리스트 보기
-	List<Board> selectBoardList();
+	List<Board> selectBoardList(Map<String, String> pHm, Page p);
 	
 	// 한 글보기
 	Map<String, String> selectBoard();
